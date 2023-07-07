@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { async } from 'rxjs';
 
 const prisma = new PrismaClient();
 
