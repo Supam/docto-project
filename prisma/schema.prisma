@@ -14,8 +14,19 @@ model Patient {
   id        Int      @id @default(autoincrement())
   name      String
   age       Int
-  email     String   @unique
   notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User?
+}
+
+model User {
+  id        Int @id @default(autoincrement())
+  username  String
+  email     String   @unique
+  password  String
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId Int? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
