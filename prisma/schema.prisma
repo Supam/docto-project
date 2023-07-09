@@ -18,8 +18,8 @@ model ResearchCenter {
 
   name              String
   addresses         String[]
-  phoneNumber       String[]
-  email             String[]
+  phoneNumbers      String[]
+  emails            String[]
 
   notes             String?
 
