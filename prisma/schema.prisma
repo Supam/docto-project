@@ -10,23 +10,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ResearchCenter {
+  id                Int @id @default(autoincrement())
+  researchCenterId  Int @unique
+  name              String
+  locations         String[]
+  studyFields       Illness[]
+  symptoms          String[] @unique
+  neededPatientsNb  Int
+  phoneNumber       String[]
+  email             String[]
+}
+
+model Illness {
+  name             String @id
+  terminal         Boolean
+  partsAffected    String[]
+  symptoms         String[]
+  symptomsPatient  String[]
+  symptomsCenter   String[]
+  illnessPatient   Patient  @relation(fields: [symptomsPatient], references: [symptoms])
+  illnessCenter    ResearchCenter  @relation(fields: [symptomsCenter], references: [symptoms])
+}
+
 model Patient {
-  id        Int      @id @default(autoincrement())
-  name      String
-  age       Int
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User?
+  id            Int @id @default(autoincrement())
+  name          String
+  phone         Int
+  age           Int
+  gender        String[]
+  address       String
+  nationality   String
+  illnesses     Illness[]
+  symptoms      String[] @unique
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  User          User?
 }
 
 model User {
-  id        Int @id @default(autoincrement())
-  username  String
-  email     String   @unique
-  password  String
-  patient   Patient? @relation(fields: [patientId], references: [id])
-  patientId Int? @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int @id @default(autoincrement())
+  username    String
+  email       String @unique
+  password    String
+  patient     Patient? @relation(fields: [patientId], references: [id])
+  patientId   Int? @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
