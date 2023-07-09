@@ -14,7 +14,7 @@ model ResearchCenter {
   id                Int @id @default(autoincrement())
 
   centerSymptoms    String[] @unique
-  studyFields       Illness[]
+  studyFields       Condition[]
 
   name              String
   addresses         String[]
@@ -27,37 +27,49 @@ model ResearchCenter {
   updatedAt         DateTime @updatedAt
 }
 
+enum State {
+  SCHEDULED
+  RECRUITING
+  TESTING
+  ANALYSING
+  COMPLETED
+}
+
 model Study {
   id               Int @id @default(autoincrement())
 
   studySymptoms    String[] @unique
-  illnesses        Illness[]
+  conditions       Condition[]
 
   name             String
-  patientNb        Int
-  state            String
+  patientCurrent   Int
+  patientMax       Int
+  state            State @default(SCHEDULED)
+  paperUrl         String?
+
+  notes            String?
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
 
-model Illness {
-  id               Int @id @default(autoincrement())
+model Condition {
+  id                Int @id @default(autoincrement())
 
-  symptomsPatient  String[]
-  illnessPatient   Patient  @relation(fields: [symptomsPatient], references: [patientSymptoms])
-  symptomsDoctor   String[]
-  illnessDoctor    Doctor  @relation(fields: [symptomsDoctor], references: [doctorSymptoms])
-  symptomsCenter   String[]
-  illnessCenter    ResearchCenter  @relation(fields: [symptomsCenter], references: [centerSymptoms])
-  symptomsStudy    String[]
-  illnessStudy     Study @relation(fields: [symptomsStudy], references: [studySymptoms])
+  symptomsPatient   String[]
+  conditionsPatient Patient  @relation(fields: [symptomsPatient], references: [patientSymptoms])
+  symptomsDoctor    String[]
+  conditionsDoctor  Doctor  @relation(fields: [symptomsDoctor], references: [doctorSymptoms])
+  symptomsCenter    String[]
+  conditionsCenter  ResearchCenter  @relation(fields: [symptomsCenter], references: [centerSymptoms])
+  symptomsStudy     String[]
+  illnessStudy      Study @relation(fields: [symptomsStudy], references: [studySymptoms])
 
 
-  name             String @unique
-  terminal         Boolean
-  partsAffected    String[]
-  symptoms         String[]
+  name              String @unique
+  terminal          Boolean
+  partsAffected     String[]
+  symptoms          String[]
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -66,14 +78,9 @@ model Illness {
 model Patient {
   id                Int @id @default(autoincrement())
 
-  illnesses         Illness[]
+  conditions        Condition[]
   patientSymptoms   String[] @unique
   User              User?
-
-  age               Int
-  sex               String
-  address           String
-  nationality       String
 
   notes             String?
 
@@ -84,13 +91,9 @@ model Patient {
 model Doctor {
   id                Int @id @default(autoincrement())
 
-  studyFields       Illness[]
+  studyFields       Condition[]
   doctorSymptoms    String[] @unique
   User              User?
-
-  sex               String
-  address           String
-  nationality       String
 
   notes             String?
 
@@ -107,9 +110,13 @@ model User {
   doctor            Doctor? @relation(fields: [userDoctor], references: [id])
 
   email             String @unique
-  phoneNumber       String 
-  username          String
+  phoneNumber       String @unique
+  username          String @unique
   password          String
+  age               Int
+  sex               String
+  address           String
+  nationality       String
 
   notes             String?
 
