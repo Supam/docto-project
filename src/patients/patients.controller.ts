@@ -6,7 +6,7 @@ import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { PatientEntity } from './entities/patient.entity';
 
 @Controller('patients')
-@ApiTags('patients')
+@ApiTags('Patients')
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) { }
 
