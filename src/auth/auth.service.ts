@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   Logger,
   NotFoundException,
@@ -13,9 +14,11 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signIn(email: string, pass: string): Promise<any> {
+    if (!email || !pass) throw new BadRequestException();
+
     const user = await this.usersService.findOne(email);
     if (!user) throw new NotFoundException();
 
