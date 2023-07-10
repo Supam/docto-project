@@ -47,7 +47,7 @@ export class UsersController {
         description: 'Bearer token auth is required for this route',
     })
     @ApiCreatedResponse({ type: UserEntity, isArray: false })
-    updaete(@Body() updateUserDto: UpdateUserDto) {
+    update(@Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(updateUserDto);
     }
 
