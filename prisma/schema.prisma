@@ -10,23 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ResearchCenter {
-  id                Int @id @default(autoincrement())
-
-  centerSymptoms    String[] @unique
-  studyFields       Condition[]
-
-  name              String
-  addresses         String[]
-  phoneNumbers      String[]
-  emails            String[]
-
-  notes             String?
-
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
 enum State {
   SCHEDULED
   RECRUITING
@@ -35,65 +18,115 @@ enum State {
   COMPLETED
 }
 
-model Study {
-  id               Int @id @default(autoincrement())
-
-  studySymptoms    String[] @unique
-  conditions       Condition[]
-
-  name             String
-  patientCurrent   Int
-  patientMax       Int
-  state            State @default(SCHEDULED)
-  paperUrl         String?
-
-  notes            String?
-
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
 model Condition {
-  id                Int @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
 
-  symptomsPatient   String[]
-  conditionsPatient Patient  @relation(fields: [symptomsPatient], references: [patientSymptoms])
-  symptomsDoctor    String[]
-  conditionsDoctor  Doctor  @relation(fields: [symptomsDoctor], references: [doctorSymptoms])
-  symptomsCenter    String[]
-  conditionsCenter  ResearchCenter  @relation(fields: [symptomsCenter], references: [centerSymptoms])
-  symptomsStudy     String[]
-  illnessStudy      Study @relation(fields: [symptomsStudy], references: [studySymptoms])
+  /// Many to Many
+  doctors           ConditionsOnDoctors[]
+  patients          ConditionsOnPatients[]
+  studies           ConditionsOnStudies[]
 
 
-  name              String @unique
-  terminal          Boolean
+  name              String    @unique
   partsAffected     String[]
   symptoms          String[]
+  terminal          Boolean
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
-model Patient {
-  id                Int @id @default(autoincrement())
+model ConditionsOnDoctors {
+  @@id([doctorId, conditionId])
 
-  conditions        Condition[]
-  patientSymptoms   String[] @unique
-  User              User?
+  /// Many to Many
+  doctor            Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId          Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
+}
 
-  notes             String?
+model ConditionsOnPatients {
+  @@id([patientId, conditionId])
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  /// Many to Many
+  patient           Patient   @relation(fields: [patientId], references: [id])
+  patientId         Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
+}
+
+model ConditionsOnStudies {
+  @@id([studyId, conditionId])
+
+  /// Many to Many
+  study             Study     @relation(fields: [studyId], references: [id])
+  studyId           Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
 }
 
 model Doctor {
+  id                Int       @id @default(autoincrement())
+
+  /// One to One
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int       @unique
+  /// Many to Many
+  conditions        ConditionsOnDoctors[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Patient {
+  id                Int       @id @default(autoincrement())
+
+  /// One to One
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int       @unique
+  /// Many to Many
+  conditions        ConditionsOnPatients[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ResearchCenter {
+  id                Int       @id @default(autoincrement())
+
+  /// One to Many
+  studies           Study[]
+
+  addresses         String[]
+  emails            String[]
+  name              String    @unique
+  phoneNumbers      String[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Study {
   id                Int @id @default(autoincrement())
 
-  studyFields       Condition[]
-  doctorSymptoms    String[] @unique
-  User              User?
+  /// Many to One
+  researchCenter    ResearchCenter @relation(fields: [researchCenterId], references: [id])
+  researchCenterId  Int
+  /// Many to Many
+  conditions        ConditionsOnStudies[]
+
+  name              String
+  paperUrl          String?
+  patientCurrent    Int
+  patientMax        Int
+  state             State @default(SCHEDULED)
 
   notes             String?
 
@@ -104,19 +137,18 @@ model Doctor {
 model User {
   id                Int @id @default(autoincrement())
 
-  userPatient       Int? @unique
-  patient           Patient? @relation(fields: [userPatient], references: [id])
-  userDoctor        Int? @unique
-  doctor            Doctor? @relation(fields: [userDoctor], references: [id])
+  /// One to One
+  doctor            Doctor?
+  patient           Patient?
 
-  email             String @unique
-  phoneNumber       String @unique
-  username          String @unique
-  password          String
-  age               Int
-  sex               String
   address           String
+  age               Int
+  email             String @unique
   nationality       String
+  password          String
+  phoneNumber       String @unique
+  sex               String
+  username          String @unique
 
   notes             String?
 
