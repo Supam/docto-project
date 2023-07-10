@@ -10,23 +10,148 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum State {
+  SCHEDULED
+  RECRUITING
+  TESTING
+  ANALYSING
+  COMPLETED
+}
+
+model Condition {
+  id                Int       @id @default(autoincrement())
+
+  /// Many to Many
+  doctors           ConditionsOnDoctors[]
+  patients          ConditionsOnPatients[]
+  studies           ConditionsOnStudies[]
+
+
+  name              String    @unique
+  partsAffected     String[]
+  symptoms          String[]
+  terminal          Boolean
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ConditionsOnDoctors {
+  @@id([doctorId, conditionId])
+
+  /// Many to Many
+  doctor            Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId          Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
+}
+
+model ConditionsOnPatients {
+  @@id([patientId, conditionId])
+
+  /// Many to Many
+  patient           Patient   @relation(fields: [patientId], references: [id])
+  patientId         Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
+}
+
+model ConditionsOnStudies {
+  @@id([studyId, conditionId])
+
+  /// Many to Many
+  study             Study     @relation(fields: [studyId], references: [id])
+  studyId           Int
+  condition         Condition @relation(fields: [conditionId], references: [id])
+  conditionId       Int
+}
+
+model Doctor {
+  id                Int       @id @default(autoincrement())
+
+  /// One to One
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int       @unique
+  /// Many to Many
+  conditions        ConditionsOnDoctors[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
 model Patient {
-  id        Int      @id @default(autoincrement())
-  name      String
-  age       Int
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User?
+  id                Int       @id @default(autoincrement())
+
+  /// One to One
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int       @unique
+  /// Many to Many
+  conditions        ConditionsOnPatients[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model ResearchCenter {
+  id                Int       @id @default(autoincrement())
+
+  /// One to Many
+  studies           Study[]
+
+  addresses         String[]
+  emails            String[]
+  name              String    @unique
+  phoneNumbers      String[]
+
+  notes             String?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model Study {
+  id                Int @id @default(autoincrement())
+
+  /// Many to One
+  researchCenter    ResearchCenter @relation(fields: [researchCenterId], references: [id])
+  researchCenterId  Int
+  /// Many to Many
+  conditions        ConditionsOnStudies[]
+
+  name              String
+  paperUrl          String?
+  patientCurrent    Int
+  patientMax        Int
+  state             State @default(SCHEDULED)
+
+  notes             String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model User {
-  id        Int @id @default(autoincrement())
-  username  String
-  email     String   @unique
-  password  String
-  patient   Patient? @relation(fields: [patientId], references: [id])
-  patientId Int? @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int @id @default(autoincrement())
+
+  /// One to One
+  doctor            Doctor?
+  patient           Patient?
+
+  address           String
+  age               Int
+  email             String @unique
+  nationality       String
+  password          String
+  phoneNumber       String @unique
+  sex               String
+  username          String
+
+  notes             String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
