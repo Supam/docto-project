@@ -4,7 +4,7 @@ import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { PatientEntity } from './entities/patient.entity';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('patients')
 @ApiTags('Patients')
