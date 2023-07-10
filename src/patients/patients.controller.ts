@@ -28,7 +28,7 @@ export class PatientsController {
   @Get(':id')
   @UseGuards(AuthGuard)
   @ApiCreatedResponse({ type: PatientEntity })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.patientsService.findOne(+id);
   }
 
