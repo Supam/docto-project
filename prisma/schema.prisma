@@ -148,7 +148,7 @@ model User {
   password          String
   phoneNumber       String @unique
   sex               String
-  username          String @unique
+  username          String
 
   notes             String?
 
