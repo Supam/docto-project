@@ -18,10 +18,14 @@ The application is not guarenteed to work if the correct version is not used
 ```bash
 $ npm install
 ```
+You will need to create a database called "docto-project" on your local machine if it does not already exist.
 
 ## Running the app
 
 ```bash
+# database
+$ docker-compose up
+
 # development
 $ npm run start
 
