@@ -3,7 +3,6 @@ import 'my_button.dart';
 import 'Textfield.dart';
 import 'squareTile.dart';
 import 'package:flutter/src/widgets/single_child_scroll_view.dart';
-import 'package:doctorare/menu.dart';
 
 class DoctorLoginPage extends StatelessWidget {
   DoctorLoginPage({super.key});
@@ -27,10 +26,7 @@ class DoctorLoginPage extends StatelessWidget {
             const SizedBox(height: 50),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Menu()),
-                );
+                // todo
               },
               child: Image.asset(
                 "lib/images/sigle.png",

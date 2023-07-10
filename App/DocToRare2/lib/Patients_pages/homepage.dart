@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'page1.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'finder.dart';
 
 class PatientView extends StatelessWidget {
   @override
@@ -130,6 +131,15 @@ class _HomePagePatient extends State<HomePagePatient> {
                 // ...
                 // Then close the drawer
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('SEARCH'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => finder()),
+                );
               },
             ),
           ],

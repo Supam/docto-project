@@ -2,6 +2,7 @@ import 'package:doctorare/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'homepage.dart';
+import 'finder.dart';
 
 class Scene1 extends StatelessWidget {
   @override
@@ -119,10 +120,10 @@ class _Page1 extends State<Page1> {
             ListTile(
               title: Text('APPOINTMENT'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Scene1()),
+                );
               },
             ),
             ListTile(
@@ -132,6 +133,15 @@ class _Page1 extends State<Page1> {
                 // ...
                 // Then close the drawer
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('SEARCH'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => finder()),
+                );
               },
             ),
           ],
