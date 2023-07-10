@@ -4,11 +4,11 @@ import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-valida
 
 export class PatientEntity implements Patient {
 
-    @ApiProperty({ type: Number })
-    age: number;
+    @ApiProperty({ type: Number, readOnly: true })
+    id: number;
 
     @ApiProperty({ type: Number })
-    id: number;
+    age: number;
 
     @ApiProperty({ type: String })
     name: string;

@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreatePatientDto {
 
-    @ApiProperty()
+    @ApiProperty({ readOnly: true })
     @IsString()
     @IsNotEmpty()
     name: string;
