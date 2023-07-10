@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { genSaltSync, hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +23,10 @@ export class UsersService {
   }
 
   async create(user: CreateUserDto): Promise<User | null> {
+    const saltRounds = 10;
+    const salt = genSaltSync(saltRounds);
+    user.password = hashSync(user.password, salt);
+
     return this.prisma.user.create({ data: user })
   }
 

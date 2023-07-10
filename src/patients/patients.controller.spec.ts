@@ -4,6 +4,7 @@ import { PatientsService } from './patients.service';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/constants';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('PatientsController', () => {
   let controller: PatientsController;
@@ -16,7 +17,7 @@ describe('PatientsController', () => {
         JwtModule.register({
           global: true,
           secret: jwtConstants.secret,
-          signOptions: { expiresIn: '60s' },
+          signOptions: { expiresIn: '5min' },
         }),]
     }).compile();
 
@@ -26,4 +27,5 @@ describe('PatientsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
 });

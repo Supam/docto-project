@@ -18,14 +18,15 @@ import { ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private authService: AuthService) { }
 
-  @Post('login')
+  @Post('')
   signIn(@Body() signInDto: SignInDto) {
+    console.log("test")
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
   @UseGuards(AuthGuard)
-  @Get('profile')
+  @Get('')
   getProfile(@Request() req: any) {
-    return req.user;
+    return true;
   }
 }
