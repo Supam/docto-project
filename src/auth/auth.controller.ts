@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signIn.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -25,6 +25,10 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   getProfile(@Request() req: any) {
     return req.user;
   }

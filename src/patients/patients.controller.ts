@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { PatientEntity } from './entities/patient.entity';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -13,6 +13,10 @@ export class PatientsController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   @ApiCreatedResponse({ type: PatientEntity })
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientsService.create(createPatientDto);
@@ -20,6 +24,10 @@ export class PatientsController {
 
   @Get()
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   @ApiCreatedResponse({ type: PatientEntity, isArray: true })
   findAll() {
     return this.patientsService.findAll();
@@ -27,6 +35,10 @@ export class PatientsController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   @ApiCreatedResponse({ type: PatientEntity })
   findOne(@Param('id') id: string) {
     return this.patientsService.findOne(+id);
@@ -34,6 +46,10 @@ export class PatientsController {
 
   @Patch(':id')
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   @ApiCreatedResponse({ type: PatientEntity })
   update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
     return this.patientsService.update(+id, updatePatientDto);
@@ -41,6 +57,10 @@ export class PatientsController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token authentification is required for this route',
+  })
   @ApiCreatedResponse({ type: PatientEntity })
   remove(@Param('id') id: string) {
     return this.patientsService.remove(+id);

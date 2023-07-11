@@ -16,7 +16,7 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @ApiHeader({
         name: 'Authorization',
-        description: 'Bearer token auth is required for this route',
+        description: 'Bearer token authentification is required for this route',
     })
     @ApiCreatedResponse({ type: UserEntity, isArray: true })
     findAll() {
@@ -27,7 +27,7 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @ApiHeader({
         name: 'Authorization',
-        description: 'Bearer token auth is required for this route',
+        description: 'Bearer token authentification is required for this route',
     })
     @ApiCreatedResponse({ type: UserEntity, isArray: true })
     findOne(@Param() params: any) {
@@ -44,7 +44,7 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @ApiHeader({
         name: 'Authorization',
-        description: 'Bearer token auth is required for this route',
+        description: 'Bearer token authentification is required for this route',
     })
     @ApiCreatedResponse({ type: UserEntity, isArray: false })
     updaete(@Body() updateUserDto: UpdateUserDto) {
