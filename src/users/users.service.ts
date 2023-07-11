@@ -8,7 +8,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private prisma: PrismaService) { }
 
-  async findOne(email: string): Promise<User | null> {
+  async findAll(): Promise<User[] | null> {
+    return this.prisma.user.findMany();
+  }
+
+  async findOne(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
+
+  async findOnebyEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { email } });
   }
 

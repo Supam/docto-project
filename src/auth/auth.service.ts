@@ -19,7 +19,7 @@ export class AuthService {
   async signIn(email: string, pass: string): Promise<any> {
     if (!email || !pass) throw new BadRequestException();
 
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.findOnebyEmail(email);
     if (!user) throw new NotFoundException();
 
     if (!compareSync(pass, user.password)) {

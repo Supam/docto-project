@@ -3,6 +3,8 @@ import { User } from "@prisma/client";
 import { Exclude } from 'class-transformer';
 
 export class UserEntity implements User {
+    @Exclude()
+    password: string;
 
     @ApiProperty({ type: String })
     address: string;
@@ -40,7 +42,4 @@ export class UserEntity implements User {
     @ApiProperty({ type: String, nullable: true })
     notes: string | null;
 
-    @Exclude()
-    @ApiProperty({ type: String, readOnly: true })
-    password: string;
 }
