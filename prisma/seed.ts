@@ -7,6 +7,23 @@ async function main() {
   const saltRounds = 10;
   const salt = genSaltSync(saltRounds);
 
+  const pass0 = 'test';
+  const hash0 = hashSync(pass0, salt);
+  const user0 = await prisma.user.upsert({
+    where: { email: 'test' },
+    update: {},
+    create: {
+      birthday: new Date("01-01-2000"),
+      address: "test",
+      email: "test",
+      nationality: "test",
+      password: hash0,
+      phoneNumber: "test",
+      sex: "test",
+      username: "test",
+    },
+  });
+
   const pass1 = 'testpass';
   const hash1 = hashSync(pass1, salt);
   const user1 = await prisma.user.upsert({

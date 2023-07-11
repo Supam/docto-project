@@ -20,7 +20,6 @@ export class AuthController {
 
   @Post('')
   signIn(@Body() signInDto: SignInDto) {
-    console.log("test")
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
