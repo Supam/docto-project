@@ -1,46 +1,40 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { StudyEntity } from "src/study/entity/study.entity";
 
 export class CreateLaboDto {
 
     @ApiProperty()
-    @IsNumber()
+    @IsString()
     @ValidateNested({ each: true })
-    @Type(() => Number)
+    @Type(() => String)
     @IsNotEmpty()
-    studies: Number[];
+    addresses: string[];
 
     @ApiProperty()
     @IsString()
     @ValidateNested({ each: true })
     @Type(() => String)
     @IsNotEmpty()
-    addresses: String[];
+    emails: string[];
+
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    name: string;
 
     @ApiProperty()
     @IsString()
     @ValidateNested({ each: true })
     @Type(() => String)
     @IsNotEmpty()
-    emails: String[];
-
-    @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
-    name: String;
-
-    @ApiProperty()
-    @IsString()
-    @ValidateNested({ each: true })
-    @Type(() => String)
-    @IsNotEmpty()
-    phoneNumbers: String[];
+    phoneNumbers: string[];
 
     @ApiProperty()
     @IsString()
     @IsOptional()
-    notes?: String;
+    notes?: string;
 
 
 
