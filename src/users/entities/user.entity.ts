@@ -3,7 +3,23 @@ import { User } from "@prisma/client";
 import { Exclude } from 'class-transformer';
 
 export class UserEntity implements User {
-    @ApiProperty({ type: Number, readOnly: true })
+
+    @ApiProperty({ type: String })
+    address: string;
+
+    @ApiProperty({ type: Date })
+    birthday: Date;
+
+    @ApiProperty({ type: String })
+    nationality: string;
+
+    @ApiProperty({ type: String })
+    phoneNumber: string;
+
+    @ApiProperty({ type: String })
+    sex: string;
+
+    @ApiProperty({ type: Number })
     id: number;
 
     @ApiProperty()
@@ -21,7 +37,10 @@ export class UserEntity implements User {
     @ApiProperty({ type: Date })
     updatedAt: Date;
 
+    @ApiProperty({ type: String, nullable: true })
+    notes: string | null;
+
     @Exclude()
-    @ApiProperty({ type: String })
+    @ApiProperty({ type: String, readOnly: true })
     password: string;
 }
