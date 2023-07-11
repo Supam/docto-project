@@ -3,20 +3,16 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-// function to get the Bearer : <auth_token>
-// does not work since jwtService is undefined
-async function test_auth() {
-  const paylaod = { sub: "test", username: "test" };
-  return this.jwtService.signAsync(paylaod);
-}
 
 async function login(app: INestApplication) {
-  const token = { "email": "string", "password": "string" };
+  const payload = { "email": "test", "password": "test" };
   const response = await request(app.getHttpServer())
     .post(`/auth`)
-    .set('Authorization', `${token}`)
+    .send(payload)
 
-  expect(response.statusCode).toEqual(200)
+  expect(response.statusCode).toEqual(201)
+
+  return response.body["accessToken"]
 }
 
 describe('AppController (e2e)', () => {
@@ -65,29 +61,31 @@ describe('AppController (e2e)', () => {
       it('Unauthorized - 401', () => {
         return request(app.getHttpServer())
           .get('/patients/0')
-          .expect({ "message": "Unauthorized", "statusCode": 401 })
+          .expect(401)
       });
 
       it('Authorized - 200', async () => {
-        await login(app)
+        const token = await login(app)
 
         return await request(app.getHttpServer())
           .get('/patients/0')
-          .expect({ "message": "Authorized", "statusCode": 200 })
+          .set('Authorization', `Bearer ${await token}`)
+          .expect(200)
       });
     })
-    describe("PATCH", () => {
+    describe.only("PATCH", () => {
       it('Unauthorized - 401', () => {
         return request(app.getHttpServer())
           .patch('/patients/0')
           .expect({ "message": "Unauthorized", "statusCode": 401 })
       });
 
-      it('Authorized - 200', async () => {
-        await login(app)
+      it('All Good - 200', async () => {
+        const token = await login(app)
 
         return request(app.getHttpServer())
           .patch('/patients/0')
+          .set('Authorization', `Bearer ${await token}`)
           .expect({ "message": "Authorized", "statusCode": 200 })
       });
     })

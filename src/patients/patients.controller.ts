@@ -11,13 +11,7 @@ import { AuthGuard } from '../auth/auth.guard';
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) { }
 
-  @Post()
-  @UseGuards(AuthGuard)
-  @ApiCreatedResponse({ type: PatientEntity })
-  create(@Body() createPatientDto: CreatePatientDto) {
-    return this.patientsService.create(createPatientDto);
-  }
-
+  // - - - - - - - - - - GET - - - - - - - - - - -
   @Get()
   @UseGuards(AuthGuard)
   @ApiCreatedResponse({ type: PatientEntity, isArray: true })
@@ -32,6 +26,15 @@ export class PatientsController {
     return this.patientsService.findOne(+id);
   }
 
+  // - - - - - - - - - - POST - - - - - - - - - - -
+  @Post()
+  @UseGuards(AuthGuard)
+  @ApiCreatedResponse({ type: PatientEntity })
+  create(@Body() createPatientDto: CreatePatientDto) {
+    return this.patientsService.create(createPatientDto);
+  }
+
+  // - - - - - - - - - - PATCH - - - - - - - - - - -
   @Patch(':id')
   @UseGuards(AuthGuard)
   @ApiCreatedResponse({ type: PatientEntity })
@@ -39,6 +42,7 @@ export class PatientsController {
     return this.patientsService.update(+id, updatePatientDto);
   }
 
+  // - - - - - - - - - - DELETE - - - - - - - - - - -
   @Delete(':id')
   @UseGuards(AuthGuard)
   @ApiCreatedResponse({ type: PatientEntity })
