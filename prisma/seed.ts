@@ -5,39 +5,23 @@ const prisma = new PrismaClient();
 
 async function main() {
   const saltRounds = 10;
-  const myPlaintextPassword = 'monpasswordtrèssécurisé';
-
   const salt = genSaltSync(saltRounds);
-  const hash = hashSync(myPlaintextPassword, salt);
 
-  const patient1 = await prisma.patient.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      name: 'Jon Doe',
-      age: 35,
-    },
-  });
-
-  const patient2 = await prisma.patient.upsert({
-    where: { id: 2 },
-    update: {},
-    create: {
-      name: 'Jean Patate',
-      notes: "c'est simplement une patate",
-      age: 15,
-    },
-  });
+  const pass1 = 'testpass';
+  const hash1 = hashSync(pass1, salt);
 
   const user1 = await prisma.user.upsert({
     where: { email: 'jon.doe@gmail.com' },
-    update: {
-      password: hash,
-    },
+    update: {},
     create: {
-      email: 'jon.doe@gmail.com',
-      username: 'jon',
-      password: hash,
+      birthday:,
+      address: "75 av de verdun",
+      email: "thibault.viennot@gmail.com",
+      nationality: "Français",
+      password: hash1,
+      phoneNumber: "0782903377",
+      sex: "Home",
+      username: "thibault.viennot",
     },
   });
 

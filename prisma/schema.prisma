@@ -19,139 +19,138 @@ enum State {
 }
 
 model Condition {
-  id                Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// Many to Many
-  doctors           ConditionsOnDoctors[]
-  patients          ConditionsOnPatients[]
-  studies           ConditionsOnStudies[]
+  doctors  ConditionsOnDoctors[]
+  patients ConditionsOnPatients[]
+  studies  ConditionsOnStudies[]
 
+  name          String   @unique
+  partsAffected String[]
+  symptoms      String[]
+  terminal      Boolean
 
-  name              String    @unique
-  partsAffected     String[]
-  symptoms          String[]
-  terminal          Boolean
-
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ConditionsOnDoctors {
-  @@id([doctorId, conditionId])
-
   /// Many to Many
-  doctor            Doctor    @relation(fields: [doctorId], references: [id])
-  doctorId          Int
-  condition         Condition @relation(fields: [conditionId], references: [id])
-  conditionId       Int
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId    Int
+  condition   Condition @relation(fields: [conditionId], references: [id])
+  conditionId Int
+
+  @@id([doctorId, conditionId])
 }
 
 model ConditionsOnPatients {
-  @@id([patientId, conditionId])
-
   /// Many to Many
-  patient           Patient   @relation(fields: [patientId], references: [id])
-  patientId         Int
-  condition         Condition @relation(fields: [conditionId], references: [id])
-  conditionId       Int
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  patientId   Int
+  condition   Condition @relation(fields: [conditionId], references: [id])
+  conditionId Int
+
+  @@id([patientId, conditionId])
 }
 
 model ConditionsOnStudies {
-  @@id([studyId, conditionId])
-
   /// Many to Many
-  study             Study     @relation(fields: [studyId], references: [id])
-  studyId           Int
-  condition         Condition @relation(fields: [conditionId], references: [id])
-  conditionId       Int
+  study       Study     @relation(fields: [studyId], references: [id])
+  studyId     Int
+  condition   Condition @relation(fields: [conditionId], references: [id])
+  conditionId Int
+
+  @@id([studyId, conditionId])
 }
 
 model Doctor {
-  id                Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// One to One
-  user              User      @relation(fields: [userId], references: [id])
-  userId            Int       @unique
+  user       User                  @relation(fields: [userId], references: [id])
+  userId     Int                   @unique
   /// Many to Many
-  conditions        ConditionsOnDoctors[]
+  conditions ConditionsOnDoctors[]
 
-  notes             String?
+  notes String?
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Patient {
-  id                Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// One to One
-  user              User      @relation(fields: [userId], references: [id])
-  userId            Int       @unique
+  user       User                   @relation(fields: [userId], references: [id])
+  userId     Int                    @unique
   /// Many to Many
-  conditions        ConditionsOnPatients[]
+  conditions ConditionsOnPatients[]
 
-  notes             String?
+  notes String?
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ResearchCenter {
-  id                Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// One to Many
-  studies           Study[]
+  studies Study[]
 
-  addresses         String[]
-  emails            String[]
-  name              String    @unique
-  phoneNumbers      String[]
+  addresses    String[]
+  emails       String[]
+  name         String   @unique
+  phoneNumbers String[]
 
-  notes             String?
+  notes String?
 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Study {
-  id                Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// Many to One
-  researchCenter    ResearchCenter @relation(fields: [researchCenterId], references: [id])
-  researchCenterId  Int
+  researchCenter   ResearchCenter        @relation(fields: [researchCenterId], references: [id])
+  researchCenterId Int
   /// Many to Many
-  conditions        ConditionsOnStudies[]
+  conditions       ConditionsOnStudies[]
 
-  name              String
-  paperUrl          String?
-  patientCurrent    Int
-  patientMax        Int
-  state             State @default(SCHEDULED)
+  name           String
+  paperUrl       String?
+  patientCurrent Int
+  patientMax     Int
+  state          State   @default(SCHEDULED)
 
-  notes             String?
+  notes String?
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id                Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   /// One to One
-  doctor            Doctor?
-  patient           Patient?
+  doctor  Doctor?
+  patient Patient?
 
-  address           String
-  age               Int
-  email             String @unique
-  nationality       String
-  password          String
-  phoneNumber       String @unique
-  sex               String
-  username          String
+  address     String
+  birthday    DateTime
+  email       String   @unique
+  nationality String
+  password    String
+  phoneNumber String   @unique
+  sex         String
+  username    String
 
-  notes             String?
+  notes String?
 
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
