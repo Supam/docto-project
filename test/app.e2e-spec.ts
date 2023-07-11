@@ -12,10 +12,10 @@ async function test_auth() {
 
 async function login(app: INestApplication) {
   const token = { "email": "string", "password": "string" };
-  const response =  await request(app.getHttpServer())
-  .post(`/auth`)
-  .set('Authorization', `${token}`)
-    
+  const response = await request(app.getHttpServer())
+    .post(`/auth`)
+    .set('Authorization', `${token}`)
+
   expect(response.statusCode).toEqual(200)
 }
 

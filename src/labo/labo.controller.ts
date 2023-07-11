@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { LaboService } from './labo.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { LaboEntity } from './entities/labo.entity';
 import { CreateLaboDto } from './dto/create-labo.dto';
 import { UpdateLaboDto } from './dto/update-labo.dto';
