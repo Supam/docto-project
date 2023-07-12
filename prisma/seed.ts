@@ -7,13 +7,30 @@ async function main() {
   const saltRounds = 10;
   const salt = genSaltSync(saltRounds);
 
+  const pass0 = 'test';
+  const hash0 = hashSync(pass0, salt);
+  const user0 = await prisma.user.upsert({
+    where: { email: 'test' },
+    update: {},
+    create: {
+      birthday: new Date("01-01-2000"),
+      address: "test",
+      email: "test",
+      nationality: "test",
+      password: hash0,
+      phoneNumber: "test",
+      sex: "test",
+      username: "test",
+    },
+  });
+
   const pass1 = 'testpass';
   const hash1 = hashSync(pass1, salt);
   const user1 = await prisma.user.upsert({
     where: { email: 'thibault.viennot@gmail.com' },
     update: {},
     create: {
-      birthday: new Date("05/06/2001"),
+      birthday: new Date("2001-06-05"),
       address: "75 av de verdun",
       email: "thibault.viennot@gmail.com",
       nationality: "Français",
@@ -31,7 +48,7 @@ async function main() {
     where: { email: 'alexandre.david@gmail.com' },
     update: {},
     create: {
-      birthday: new Date("02/12/1998"),
+      birthday: new Date("1998-12-24"),
       address: "1 av de L'Elysée",
       email: "alexandre.david@gmail.com",
       nationality: "Russe",
@@ -48,7 +65,7 @@ async function main() {
     where: { email: 'lam.pouffe@pornhub.com' },
     update: {},
     create: {
-      birthday: new Date("24/09/2005"),
+      birthday: new Date("2005-09-12"),
       address: "69 av de Stalinhgrad",
       email: "lam.pouffe@pornhub.com",
       nationality: "Bangladesh",
@@ -58,7 +75,6 @@ async function main() {
       username: "lam.sexure",
     },
   });
-
 }
 
 main()

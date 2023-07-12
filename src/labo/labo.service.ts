@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateLaboDto } from './dto/create-labo.dto';
 import { UpdateLaboDto } from './dto/update-labo.dto';
 
@@ -28,6 +28,6 @@ export class LaboService {
     }
 
     remove(id: number) {
-        return this.prisma.researchCenter.delete({ where: { id }});
+        return this.prisma.researchCenter.delete({ where: { id } });
     }
 }
