@@ -1,6 +1,6 @@
+import 'package:doctorare/Patients_pages/account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
-import 'page1.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'finder.dart';
 
@@ -62,9 +62,12 @@ class _HomePagePatient extends State<HomePagePatient> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          RotatedBox(
-            quarterTurns: 4,
-            child: _icon(Icons.menu, color: Colors.black54),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: RotatedBox(
+              quarterTurns: 4,
+              child: _icon(Icons.menu, color: Colors.black54),
+            ),
           ),
           ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(13)),
@@ -102,35 +105,44 @@ class _HomePagePatient extends State<HomePagePatient> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('DocToRare'),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "lib/images/sigleblanc.png",
+                    height: 100,
+                    width: 100,
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'DocToRare',
+                    style: TextStyle(
+                      fontSize: 30, // Desired font size
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
             ListTile(
               title: Text('HOME'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-              },
-            ),
-            ListTile(
-              title: Text('APPOINTMENT'),
-              onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => Scene1()),
+                  MaterialPageRoute(builder: (context) => PatientView()),
                 );
               },
             ),
             ListTile(
               title: Text('ACCOUNT'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => account_page()),
+                );
               },
             ),
             ListTile(

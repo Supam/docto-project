@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:doctorare/varglo.dart';
 import 'package:flutter/material.dart';
 import 'my_button.dart';
 import 'Textfield.dart';
@@ -92,6 +93,8 @@ class PatientLoginPage extends StatelessWidget {
               text: "Sign in",
               onTap: () async {
                 var client = new http.Client();
+                var key = null;
+                int id = -1;
                 Map data = {
                   "email": usernameController.text,
                   "password": passwordController.text
@@ -99,22 +102,27 @@ class PatientLoginPage extends StatelessWidget {
                 var body = json.encode(data);
                 try{
                   //final reponse = await client.get(Uri.parse('http://10.0.2.2:3000/auth/profile'), headers: {HttpHeaders.authorizationHeader:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiam9uIiwiaWF0IjoxNjg4OTMyODM3LCJleHAiOjE2ODg5MzI4OTd9.D4bPT8xfN214wFZHFM5Fbc8hjFXLWXoGCXRLQq1VZkc'});
-                  var reponse = await client.post(Uri.parse('http://10.0.2.2:3000/auth/login'), body: body, headers: {"Content-Type":"application/json"});
-                  print(json.decode(reponse.body)["accessToken"]);
-                  reponse = await client.get(Uri.parse('http://10.0.2.2:3000/auth/profile'), headers: {HttpHeaders.authorizationHeader:'Bearer '+json.decode(reponse.body)["accessToken"]});
-                  print(reponse.body);
+                  var reponse = await client.post(Uri.parse('http://10.0.2.2:3000/auth'), body: body, headers: {"Content-Type":"application/json"});
+                  print(json.decode(reponse.body));
+                  key = json.decode(reponse.body)["accessToken"];
+                  id = json.decode(reponse.body)["id"];
+                  //reponse = await client.get(Uri.parse('http://10.0.2.2:3000/auth/profile'), headers: {HttpHeaders.authorizationHeader:'Bearer '+json.decode(reponse.body)["accessToken"]});
+                  //print(json.decode(reponse.body)["id"]);
                 }
                 finally{
                   client.close();
                 }
-                /*
-                print(usernameController.text);
-                print(passwordController.text);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => PatientView()),
-                );
-                */
+
+                //print(usernameController.text);
+                //print(passwordController.text);
+                if (key != "") {
+                  glo_accesstoken = key;
+                  glo_id = id;
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => PatientView()),
+                  );
+                }
               }
             ),
 
