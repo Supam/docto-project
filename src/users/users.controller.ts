@@ -31,7 +31,7 @@ export class UsersController {
     })
     @ApiCreatedResponse({ type: UserEntity, isArray: true })
     findOne(@Param() params: any) {
-        return this.userService.findOne(params.id);
+        return this.userService.findOne(+params.id);
     }
 
     @Post()
