@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   Logger,
   NotFoundException,
@@ -13,10 +14,12 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signIn(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
+    if (!email || !pass) throw new BadRequestException();
+
+    const user = await this.usersService.findOnebyEmail(email);
     if (!user) throw new NotFoundException();
 
     if (!compareSync(pass, user.password)) {
@@ -24,6 +27,6 @@ export class AuthService {
     }
 
     const paylaod = { sub: user.id, username: user.username };
-    return { accessToken: await this.jwtService.signAsync(paylaod) };
+    return { accessToken: await this.jwtService.signAsync(paylaod), id: user.id };
   }
 }

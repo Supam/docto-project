@@ -3,24 +3,31 @@ import { Patient } from "@prisma/client";
 
 export class PatientEntity implements Patient {
 
-    @ApiProperty()
-    age: number;
-
-    @ApiProperty()
+    @ApiProperty({ type: Number, readOnly: true })
     id: number;
 
-    @ApiProperty()
+    @ApiProperty({ type: Number })
+    age: number;
+
+    @ApiProperty({ type: String })
     name: string;
 
-    @ApiProperty()
+    @ApiProperty({ type: String })
     email: string;
 
-    @ApiProperty({ required: false, nullable: true })
+    @ApiProperty({ type: Number })
+    userId: number;
+
+    @ApiProperty({
+        required: false,
+        nullable: true,
+        type: String
+    })
     notes: string | null;
 
-    @ApiProperty()
+    @ApiProperty({ type: Date })
     createdAt: Date;
 
-    @ApiProperty()
+    @ApiProperty({ type: Date })
     updatedAt: Date;
 }

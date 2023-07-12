@@ -1,10 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'my_button.dart';
 import 'Textfield.dart';
 import 'squareTile.dart';
 import 'package:flutter/src/widgets/single_child_scroll_view.dart';
-import 'package:doctorare/menu.dart';
+import 'package:doctorare/login/new_account.dart';
 import 'package:doctorare/Patients_pages/homepage.dart';
+import 'package:http/http.dart' as http;
 
 class PatientLoginPage extends StatelessWidget {
   PatientLoginPage({super.key});
@@ -28,10 +32,7 @@ class PatientLoginPage extends StatelessWidget {
             const SizedBox(height: 50),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Menu()),
-                );
+                // put any fct
               },
               child: Image.asset(
                 "lib/images/sigle.png",
@@ -43,7 +44,7 @@ class PatientLoginPage extends StatelessWidget {
 
             // print welcoming message
             Text(
-              'Welcome back Patient !',
+              'Welcome back !',
               style: TextStyle(
                 color: Colors.grey[700],
                 fontSize: 16,
@@ -89,14 +90,44 @@ class PatientLoginPage extends StatelessWidget {
             // sign in button
             MyButton(
               text: "Sign in",
-              onTap: () {
+              onTap: () async {
+                var client = new http.Client();
+                Map data = {
+                  "email": usernameController.text,
+                  "password": passwordController.text
+                };
+                var body = json.encode(data);
+                try{
+                  //final reponse = await client.get(Uri.parse('http://10.0.2.2:3000/auth/profile'), headers: {HttpHeaders.authorizationHeader:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiam9uIiwiaWF0IjoxNjg4OTMyODM3LCJleHAiOjE2ODg5MzI4OTd9.D4bPT8xfN214wFZHFM5Fbc8hjFXLWXoGCXRLQq1VZkc'});
+                  var reponse = await client.post(Uri.parse('http://10.0.2.2:3000/auth/login'), body: body, headers: {"Content-Type":"application/json"});
+                  print(json.decode(reponse.body)["accessToken"]);
+                  reponse = await client.get(Uri.parse('http://10.0.2.2:3000/auth/profile'), headers: {HttpHeaders.authorizationHeader:'Bearer '+json.decode(reponse.body)["accessToken"]});
+                  print(reponse.body);
+                }
+                finally{
+                  client.close();
+                }
+                /*
                 print(usernameController.text);
                 print(passwordController.text);
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => PatientView()),
                 );
+                */
               }
+            ),
+
+            const SizedBox(height: 15),
+
+            MyButton(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => create_account()),
+                  );
+                },
+                text: "New account"
             ),
           ],
         ),
