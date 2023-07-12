@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Logger, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -35,7 +35,7 @@ export class UsersController {
     }
 
     @Post()
-    @ApiCreatedResponse({ type: UserEntity, isArray: false })
+    @ApiCreatedResponse({ type: UserEntity })
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
@@ -46,7 +46,7 @@ export class UsersController {
         name: 'Authorization',
         description: 'Bearer token auth is required for this route',
     })
-    @ApiCreatedResponse({ type: UserEntity, isArray: false })
+    @ApiCreatedResponse({ type: UserEntity })
     update(@Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(updateUserDto);
     }
