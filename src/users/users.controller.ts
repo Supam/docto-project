@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Logger, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiCreatedResponse, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -12,7 +12,7 @@ import { AuthGuard } from '../auth/auth.guard';
 export class UsersController {
 
     constructor(private readonly userService: UsersService) { }
-
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     @UseGuards(AuthGuard)
     @ApiHeader({
@@ -24,15 +24,16 @@ export class UsersController {
         return this.userService.findAll();
     }
 
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get(":id")
     @UseGuards(AuthGuard)
     @ApiHeader({
         name: 'Authorization',
         description: 'Bearer token auth is required for this route',
     })
-    @ApiCreatedResponse({ type: UserEntity, isArray: true })
+    @ApiCreatedResponse({ type: UserEntity })
     findOne(@Param() params: any) {
-        return this.userService.findOne(+params.id);
+        return this.userService.findOne(+params.id)
     }
 
     @Post()

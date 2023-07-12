@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { genSaltSync, hashSync } from 'bcryptjs';
 import { prismaErrorHandler } from '../utils/utils';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,9 @@ export class UsersService {
       else
         throw new InternalServerErrorException("This should never happen")
     }
+    res = res?.map(item => new UserEntity({ ...item }))
+    if (!res)
+      return null;
     return res;
   }
 
@@ -33,7 +37,7 @@ export class UsersService {
       else
         throw new InternalServerErrorException("This should never happen")
     }
-    return res;
+    return new UserEntity({ ...res });
   }
 
 
@@ -47,7 +51,7 @@ export class UsersService {
       else
         throw new InternalServerErrorException("This should never happen")
     }
-    return res;
+    return new UserEntity({ ...res });
   }
 
   async create(user: CreateUserDto): Promise<User | null> {
@@ -64,7 +68,7 @@ export class UsersService {
       else
         throw new InternalServerErrorException("This should never happen")
     }
-    return res;
+    return new UserEntity({ ...res });
   }
 
   async update(user: UpdateUserDto): Promise<User | null> {
@@ -77,7 +81,6 @@ export class UsersService {
       else
         throw new InternalServerErrorException("This should never happen")
     }
-    return res;
-
+    return new UserEntity({ ...res });
   }
 }
