@@ -118,7 +118,7 @@ describe('AppController (e2e)', () => {
 
   describe("/users", () => {
     describe("POST", () => {
-      it.only('Duplicate entry - 412', () => {
+      it('Duplicate entry - 412', () => {
         return request(app.getHttpServer())
           .post('/users')
           .send({
