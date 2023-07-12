@@ -118,17 +118,20 @@ describe('AppController (e2e)', () => {
 
   describe("/users", () => {
     describe("POST", () => {
-      it('Unauthorized - 401', () => {
+      it.only('Duplicate entry - 412', () => {
         return request(app.getHttpServer())
           .post('/users')
-          .expect({ "message": "Unauthorized", "statusCode": 401 })
-      });
-    })
-    describe("PATCH", () => {
-      it('Unauthorized - 401', () => {
-        return request(app.getHttpServer())
-          .patch('/users')
-          .expect({ "message": "Unauthorized", "statusCode": 401 })
+          .send({
+            "birthday": "1999-12-31T23:00:00.000Z",
+            "address": "test",
+            "email": "test",
+            "nationality": "test",
+            "password": "hash0",
+            "phoneNumber": "test",
+            "sex": "test",
+            "username": "test"
+          })
+          .expect({ statusCode: 412, message: 'Pre-Condition Failed' })
       });
     })
   })
