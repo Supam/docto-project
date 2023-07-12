@@ -123,7 +123,7 @@ model Study {
 
   name           String
   paperUrl       String?
-  patientCurrent Int
+  patientCurrent Int     @default(0)
   patientMax     Int
   state          State   @default(SCHEDULED)
 

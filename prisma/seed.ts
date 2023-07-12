@@ -3,7 +3,7 @@ import { genSaltSync, hashSync } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-async function main() {
+async function seedUsers() {
   const saltRounds = 10;
   const salt = genSaltSync(saltRounds);
 
@@ -75,6 +75,91 @@ async function main() {
       username: "lam.sexure",
     },
   });
+}
+
+async function seedLabo() {
+  const labo1 = await prisma.researchCenter.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      name: "Labo Patate",
+      studies: {
+        createMany: {
+          data: [{
+            name: "Le Cancer",
+            patientCurrent: 0,
+            patientMax: 10,
+          }, {
+            name: "Le Cancer 2",
+            patientCurrent: 0,
+            patientMax: 10
+          }, {
+            name: "Le Cancer 3",
+            patientCurrent: 0,
+            patientMax: 10
+          }, {
+            name: "Le Cancer 4",
+            patientCurrent: 0,
+            patientMax: 10,
+          }, {
+            name: "Le Cancer 5",
+            patientCurrent: 0,
+            patientMax: 10
+          }, {
+            name: "Le Cancer 6",
+            patientCurrent: 0,
+            patientMax: 10
+          }],
+        },
+      },
+    },
+  });
+}
+
+async function seedStudy() {
+
+  const study4 = await prisma.study.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      researchCenterId: 1,
+      name: "Le Cancer 4",
+      patientCurrent: 0,
+      patientMax: 10
+    },
+  });
+
+  const study5 = await prisma.study.upsert({
+    where: { id: 5 },
+    update: {},
+    create: {
+      researchCenterId: 1,
+      name: "Le Cancer 5",
+      patientCurrent: 0,
+      patientMax: 10
+    },
+  });
+
+  const study6 = await prisma.study.upsert({
+    where: { id: 6 },
+    update: {},
+    create: {
+      researchCenterId: 1,
+      name: "Le Cancer 6",
+      patientCurrent: 0,
+      patientMax: 10
+    },
+  });
+
+
+
+
+}
+
+
+async function main() {
+  await seedUsers();
+  await seedLabo();
 }
 
 main()
