@@ -1,36 +1,83 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Prisma, User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { genSaltSync, hashSync } from 'bcryptjs';
+import { prismaErrorHandler } from '../utils/utils';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) { }
 
   async findAll(): Promise<User[] | null> {
-    return this.prisma.user.findMany();
+    let res = null;
+    try {
+      res = await this.prisma.user.findMany();
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError)
+        prismaErrorHandler(e);
+      else
+        throw new InternalServerErrorException("This should never happen")
+    }
+    return res;
   }
 
   async findOne(id: number): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+    let res = null;
+    try {
+      res = await this.prisma.user.findUnique({ where: { id } });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError)
+        prismaErrorHandler(e);
+      else
+        throw new InternalServerErrorException("This should never happen")
+    }
+    return res;
   }
 
 
   async findOnebyEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { email } });
+    let res = null;
+    try {
+      res = await this.prisma.user.findUnique({ where: { email } });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError)
+        prismaErrorHandler(e);
+      else
+        throw new InternalServerErrorException("This should never happen")
+    }
+    return res;
   }
 
   async create(user: CreateUserDto): Promise<User | null> {
+    let res = null;
+
     const saltRounds = 10;
     const salt = genSaltSync(saltRounds);
     user.password = hashSync(user.password, salt);
+    try {
+      res = await this.prisma.user.create({ data: user })
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError)
+        prismaErrorHandler(e);
+      else
+        throw new InternalServerErrorException("This should never happen")
+    }
+    return res;
 
-    return this.prisma.user.create({ data: user })
   }
 
   async update(user: UpdateUserDto): Promise<User | null> {
-    return this.prisma.user.update({ where: { email: user.email }, data: user })
+    let res = null;
+    try {
+      res = await this.prisma.user.update({ where: { email: user.email }, data: user })
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError)
+        prismaErrorHandler(e);
+      else
+        throw new InternalServerErrorException("This should never happen")
+    }
+    return res;
   }
 }
