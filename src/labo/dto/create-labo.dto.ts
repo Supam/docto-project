@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
-import { StudyEntity } from "src/study/entity/study.entity";
 
 export class CreateLaboDto {
 
