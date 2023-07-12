@@ -27,6 +27,6 @@ export class AuthService {
     }
 
     const paylaod = { sub: user.id, username: user.username };
-    return { accessToken: await this.jwtService.signAsync(paylaod) };
+    return { accessToken: await this.jwtService.signAsync(paylaod), id: user.id };
   }
 }
