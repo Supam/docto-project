@@ -6,6 +6,7 @@ import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { PatientEntity } from './entities/patient.entity';
 import { AuthGuard } from '../auth/auth.guard';
 
+
 @Controller('patients')
 @ApiTags('Patients')
 export class PatientsController {
@@ -38,6 +39,7 @@ export class PatientsController {
   @Patch(':id')
   @UseGuards(AuthGuard)
   @ApiCreatedResponse({ type: PatientEntity })
+
   update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
     return this.patientsService.update(+id, updatePatientDto);
   }

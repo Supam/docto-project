@@ -75,7 +75,6 @@ async function main() {
       username: "lam.sexure",
     },
   });
-
 }
 
 main()

@@ -6,6 +6,7 @@ import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {

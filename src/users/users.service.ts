@@ -65,7 +65,6 @@ export class UsersService {
         throw new InternalServerErrorException("This should never happen")
     }
     return res;
-
   }
 
   async update(user: UpdateUserDto): Promise<User | null> {
@@ -79,5 +78,14 @@ export class UsersService {
         throw new InternalServerErrorException("This should never happen")
     }
     return res;
+
+  }
+
+  async create(user: CreateUserDto): Promise<User | null> {
+    return this.prisma.user.create({ data: user })
+  }
+
+  async update(user: UpdateUserDto): Promise<User | null> {
+    return this.prisma.user.update({ where: { email: user.email }, data: user })
   }
 }
