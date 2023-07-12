@@ -73,20 +73,20 @@ describe('AppController (e2e)', () => {
           .expect(200)
       });
     })
-    describe.only("PATCH", () => {
+    describe("PATCH", () => {
       it('Unauthorized - 401', () => {
         return request(app.getHttpServer())
           .patch('/patients/0')
           .expect({ "message": "Unauthorized", "statusCode": 401 })
       });
 
-      it('All Good - 200', async () => {
+      it('Patient does not exist - 404', async () => {
         const token = await login(app)
 
         return request(app.getHttpServer())
-          .patch('/patients/0')
+          .patch('/patients/-1')
           .set('Authorization', `Bearer ${await token}`)
-          .expect({ "message": "Authorized", "statusCode": 200 })
+          .expect({ message: 'Not Found', statusCode: 404 })
       });
     })
     describe("DELETE", () => {
